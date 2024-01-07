@@ -1,7 +1,3 @@
-create database fooddeliveryservice;
-
-use fooddeliveryservice;
-
 create table restaurants(
 restaurantid varchar(10) primary key not null,
 restaurant_name varchar(30) not null,
@@ -14,13 +10,15 @@ foodid varchar(10) primary key not null,
 food_name varchar(30) not null,
 food_description text not null,
 food_price double not null,
-img blob not null
+img varchar(255) not null
 );
+
 
 create table category(
 category_id varchar(10) primary key not null,
 category_name enum('veg','non-veg') not null
 );
+
 
 create table food_category(
 food_category_id varchar(10) primary key not null,
@@ -102,8 +100,17 @@ foreign key(sub_category_id) references food_category(food_category_id)
 create table customer_cart_details(
 cart_id varchar(10) primary key not null,
 customer_id varchar(10),
-date_of_order date,
+date_of_order datetime,
 foreign key(customer_id) references customer(customer_id)
+);
+
+create table orders(
+cart_details_id varchar(10),
+delivery_user_id varchar(10),
+restaurant_user_id varchar(10),
+foreign key(cart_details_id) references cart_details(cart_id),
+foreign key(delivery_user_id) references delivery_user(delivery_user_id),
+foreign key(restaurant_user_id) references restaurant_user(rest_user_id)	
 );
 
 create table cart_details(
@@ -115,6 +122,7 @@ total_price double not null,
 foreign key(cart_id) references customer_cart_details(cart_id),
 foreign key(foodid) references food(foodid)
 );
+
 
 create table offers(
 offercode varchar(10) primary key not null,
